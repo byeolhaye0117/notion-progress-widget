@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+  body{margin:0;display:flex;justify-content:center;align-items:center;height:100vh;background:transparent;font-family:sans-serif;}
+  .circle-wrap{width:120px;height:120px;position:relative;}
+  svg{transform:rotate(-90deg);}
+  .percent-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:24px;font-weight:bold;}
+</style>
+</head>
+<body>
+<div class="circle-wrap">
+  <svg width="120" height="120">
+    <circle cx="60" cy="60" r="50" stroke="#eee" stroke-width="10" fill="none"/>
+    <circle id="bar" cx="60" cy="60" r="50" stroke="#4a90d9" stroke-width="10" fill="none"
+      stroke-dasharray="314" stroke-dashoffset="314" stroke-linecap="round"/>
+  </svg>
+  <div class="percent-text" id="num">0%</div>
+</div>
+<script>
+  fetch('/api/progress')
+    .then(r=>r.json())
+    .then(d=>{document.getElementById('num').textContent=d.percent+'%';
+      const offset=314-(314*d.percent/100);
+      document.getElementById('bar').style.strokeDashoffset=offset;});
+</script>
+</body>
+</html>
